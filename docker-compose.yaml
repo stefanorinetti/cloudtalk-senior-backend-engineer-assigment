@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:4.4
+    ports:
+      - 27017:27017
+  # mongo-express:
+  #   container_name: mongo-express
+  #   image: mongo-express
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - mongo
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+      target: base
+    image: product-service
+    command: npm run dev
+    ports:
+      - 4000:4000
+      - 9229:9229
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./product-service:/usr/src/app
+    depends_on:
+      - mongo
+  review-service:
+    build:
+      context: ./review-service
+      dockerfile: Dockerfile
+      target: base
+    image: review-service
+    command: npm run dev
+    ports:
+      - 4001:4001
+      - 9230:9230
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./review-service:/usr/src/app
+    depends_on:
+      - mongo

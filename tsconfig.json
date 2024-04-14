@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "outDir": "build/",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strictBindCallApply": true,
+    "allowJs": false,
+    "checkJs": false,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "lib": ["es2018"],
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "pretty": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": false
+  },
+  "include": ["**/src/**/*"],
+  "exclude": [
+    "**/build",
+    "**/node_modules"
+  ]
+}
