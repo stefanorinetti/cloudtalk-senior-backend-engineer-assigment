@@ -1,10 +1,12 @@
 import express from 'express';
 import { router } from './routes';
 import mongoose from 'mongoose';
+import { publisherConnect } from './publisher';
 
 async function main() {
   await mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongo:27017/products');
   console.log('Connected to MongoDB');
+  await publisherConnect();
 
   const app = express();
   const port = process.env.PORT || 3000;
