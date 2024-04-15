@@ -22,9 +22,15 @@ const deleteProduct = async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send(deletedProduct);
 };
 
+const patchProduct = async (req: Request, res: Response) => {
+  const patchedProduct = await productService.patchProduct({ ...req.body, id: req.params.id });
+  res.status(httpStatus.OK).send(patchedProduct);
+};
+
 export default {
   createProduct,
   deleteProduct,
   fetchProduct,
   fetchProducts,
+  patchProduct,
 }

@@ -7,6 +7,7 @@ productRouter
   .get('/:id', productController.fetchProduct)
   .get('/', productController.fetchProducts)
   .delete('/:id', productController.deleteProduct)
-  .post('/', productController.createProduct);
+  .post('/', productController.createProduct)
+  .patch('/:id', productController.patchProduct);
 
 export { productRouter };
