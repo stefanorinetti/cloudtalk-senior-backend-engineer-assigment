@@ -6,5 +6,9 @@ export const reviewCreatedHandler = async (message: amqp.ConsumeMessage | null):
     return;
   }
 
-  productReviewAverageService.calculateAverageReviewCreatedInput(JSON.parse(message.content.toString()));
+  const reviewCreatedContent = JSON.parse(message.content.toString());
+  await productReviewAverageService.calculateAverageReviewCreatedInput(({
+    ...reviewCreatedContent,
+    reviewId: reviewCreatedContent.id,
+  }));
 }

@@ -25,6 +25,10 @@ type DeleteReviewsInput = {
   productId: Review['productId'];
 }
 
+type DeleteReviewInput = {
+  id: Review['id'];
+}
+
 const saveReview = async (reviewData: SaveReviewInput): Promise<Review> => {
   const review = new ReviewModel(reviewData);
   const savedReview = await review.save();
@@ -43,7 +47,24 @@ const deleteReviews = async (reviewData: DeleteReviewsInput): Promise<void> => {
   await ReviewModel.deleteMany({ productId: reviewData.productId });
 };
 
+const deleteReview = async ({ id }: DeleteReviewInput): Promise<Review | null> => {
+  const deletedReview = await ReviewModel.findByIdAndDelete({ _id: id });
+  if (!deletedReview) {
+    return null;
+  }
+  const deletedReviewToJSON = deletedReview.toJSON();
+  return {
+    id: deletedReviewToJSON._id.toString(),
+    productId: deletedReviewToJSON.productId,
+    firstName: deletedReviewToJSON.firstName,
+    lastName: deletedReviewToJSON.lastName,
+    text: deletedReviewToJSON.text,
+    rating: deletedReviewToJSON.rating,
+  };
+};
+
 export default {
+  deleteReview,
   deleteReviews,
   saveReview,
 };

@@ -10,6 +10,12 @@ const createReview = async (req: Request, res: Response) => {
   res.status(httpStatus.CREATED).send(createdReview);
 };
 
+const deleteReview = async (req: Request, res: Response) => {
+  const deletedReview = await reviewService.deleteReview({ id: req.params.id });
+  res.status(httpStatus.OK).send(deletedReview);
+};
+
 export default {
   createReview,
+  deleteReview,
 }

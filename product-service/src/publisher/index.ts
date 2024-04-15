@@ -1,7 +1,8 @@
-import { publisherConnect, publishReviewCreatedMessage } from './publisher';
+import { publisherConnect, publishReviewCreatedMessage, publishReviewDeletedMessage } from './publisher';
 
 const reviewPublisher = {
-  publishReviewCreatedMessage
+  publishReviewCreatedMessage,
+  publishReviewDeletedMessage
 }
 
 export {

@@ -1,5 +1,5 @@
 import amqp from "amqplib";
-import { reviewCreatedHandler } from '../handlers';
+import { reviewCreatedHandler, reviewDeletedHandler } from '../handlers';
 
 export const consumerConnect = async () => {
   const connection = await amqp.connect(`amqp://${process.env.RABBITMQ_USERNAME}:${process.env.RABBITMQ_PASSWORD}@${process.env.RABBITMQ_HOST}`);
@@ -7,7 +7,8 @@ export const consumerConnect = async () => {
   console.log('Connected to RabbitMQ');
 
   const queuesHandlers = new Map<string, (message: amqp.ConsumeMessage | null) => Promise<void>>([
-    [process.env.REVIEW_CREATE_QUEUE_NAME || 'review-service-review-created', reviewCreatedHandler]
+    [process.env.REVIEW_CREATE_QUEUE_NAME || 'review-service-review-created', reviewCreatedHandler],
+    [process.env.REVIEW_DELETED_QUEUE_NAME || 'review-service-review-deleted', reviewDeletedHandler]
   ]);
 
   for (const [queueName, handler] of queuesHandlers) {

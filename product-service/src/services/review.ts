@@ -18,6 +18,10 @@ type CreateReviewInput = {
   rating: Review["rating"];
 }
 
+type DeleteReviewInput = {
+  id: Review["id"];
+}
+
 const createReview = async (createReviewInput: CreateReviewInput): Promise<Review> => {
   const associatedProduct = await productRepository.fetchProduct({ id: createReviewInput.productId });
   if (!associatedProduct) {
@@ -28,6 +32,16 @@ const createReview = async (createReviewInput: CreateReviewInput): Promise<Revie
   return savedReview;
 };
 
+const deleteReview = async (deleteReviewInput: DeleteReviewInput): Promise<Review> => {
+  const deletedReview = await reviewRepository.deleteReview(deleteReviewInput);
+  if (!deletedReview) {
+    throw new Error('Review not found');
+  }
+  await reviewPublisher.publishReviewDeletedMessage(deletedReview);
+  return deletedReview;
+};
+
 export default {
   createReview,
+  deleteReview,
 }
