@@ -5,6 +5,7 @@ const productRouter = express.Router();
 
 productRouter
   .get('/', productController.fetchProducts)
+  .delete('/:id', productController.deleteProduct)
   .post('/', productController.createProduct);
 
 export { productRouter };

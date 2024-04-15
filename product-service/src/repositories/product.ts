@@ -32,6 +32,10 @@ type FetchProductInput = {
   id: Product['id'];
 }
 
+type DeleteProductInput = {
+  id: Product['id'];
+}
+
 type FetchProductsInput = {}
 
 const saveProduct = async (productData: SaveProductInput): Promise<Product> => {
@@ -92,7 +96,23 @@ const fetchProducts = async (_?: FetchProductsInput): Promise<Product[]> => {
   }));
 };
 
+const deleteProduct = async ({ id }: DeleteProductInput): Promise<Product | null> => {
+  const deletedProduct = await ProductModel.findByIdAndDelete({ _id: id });
+  if (!deletedProduct) {
+    return null;
+  }
+  const deletedProductToJSON = deletedProduct.toJSON();
+  return {
+    id: deletedProductToJSON._id.toString(),
+    name: deletedProductToJSON.name,
+    description: deletedProductToJSON.description,
+    price: deletedProductToJSON.price,
+    averageRating: deletedProductToJSON.averageRating
+  };
+};
+
 export default {
+  deleteProduct,
   fetchProduct,
   fetchProducts,
   patchProduct,

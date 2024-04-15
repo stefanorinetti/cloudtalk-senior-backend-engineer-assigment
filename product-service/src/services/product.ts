@@ -1,4 +1,4 @@
-import { productRepository } from '../repositories';
+import { productRepository, reviewRepository } from '../repositories';
 
 export type Product = {
   id: string;
@@ -24,6 +24,10 @@ type PatchProductInput = {
   averageRating?: Product["averageRating"];
 }
 
+type DeleteProductInput = {
+  id: Product["id"];
+}
+
 const createProduct = async (createProductInput: CreateProductInput): Promise<Product> => {
   const savedProduct = await productRepository.saveProduct(createProductInput);
   return savedProduct;
@@ -42,8 +46,19 @@ const patchProduct = async (patchProductInput: PatchProductInput): Promise<Produ
   return patchedProduct;
 };
 
+const deleteProduct = async (deleteProductInput: DeleteProductInput): Promise<Product> => {
+  const deletedProduct = await productRepository.deleteProduct(deleteProductInput);
+  await reviewRepository.deleteReviews({ productId: deleteProductInput.id });
+  if (!deletedProduct) {
+    throw new Error('Product not found');
+  }
+  // publish PRODUCT_DELETED event to rabbitmq
+  return deletedProduct;
+};
+
 export default {
   createProduct,
+  deleteProduct,
   fetchProducts,
   patchProduct,
 }

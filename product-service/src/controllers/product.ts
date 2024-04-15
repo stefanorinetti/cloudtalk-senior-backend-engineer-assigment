@@ -12,7 +12,13 @@ const fetchProducts = async (_: Request, res: Response) => {
   res.status(httpStatus.OK).send(fetchedProducts);
 };
 
+const deleteProduct = async (req: Request, res: Response) => {
+  const deletedProduct = await productService.deleteProduct({ id: req.params.id });
+  res.status(httpStatus.OK).send(deletedProduct);
+};
+
 export default {
   createProduct,
+  deleteProduct,
   fetchProducts,
 }
