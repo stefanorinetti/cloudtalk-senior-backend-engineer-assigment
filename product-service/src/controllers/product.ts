@@ -7,6 +7,11 @@ const createProduct = async (req: Request, res: Response) => {
   res.status(httpStatus.CREATED).send(createdProduct);
 };
 
+const fetchProduct = async (req: Request, res: Response) => {
+  const fetchedProduct = await productService.fetchProduct({ id: req.params.id });
+  res.status(httpStatus.OK).send(fetchedProduct);
+};
+
 const fetchProducts = async (_: Request, res: Response) => {
   const fetchedProducts = await productService.fetchProducts();
   res.status(httpStatus.OK).send(fetchedProducts);
@@ -20,5 +25,6 @@ const deleteProduct = async (req: Request, res: Response) => {
 export default {
   createProduct,
   deleteProduct,
+  fetchProduct,
   fetchProducts,
 }

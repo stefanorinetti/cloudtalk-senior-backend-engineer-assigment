@@ -28,6 +28,10 @@ type DeleteProductInput = {
   id: Product["id"];
 }
 
+type FetchProductInput = {
+  id: Product["id"];
+}
+
 const createProduct = async (createProductInput: CreateProductInput): Promise<Product> => {
   const savedProduct = await productRepository.saveProduct(createProductInput);
   return savedProduct;
@@ -36,6 +40,14 @@ const createProduct = async (createProductInput: CreateProductInput): Promise<Pr
 const fetchProducts = async (_?: FetchProductsInput): Promise<Product[]> => {
   const products = await productRepository.fetchProducts();
   return products;
+};
+
+const fetchProduct = async (fetchProductInput: FetchProductInput): Promise<Product> => {
+  const product = await productRepository.fetchProduct({ id: fetchProductInput.id });
+  if (!product) {
+    throw new Error('Product not found');
+  }
+  return product;
 };
 
 const patchProduct = async (patchProductInput: PatchProductInput): Promise<Product> => {
@@ -59,6 +71,7 @@ const deleteProduct = async (deleteProductInput: DeleteProductInput): Promise<Pr
 export default {
   createProduct,
   deleteProduct,
+  fetchProduct,
   fetchProducts,
   patchProduct,
 }
