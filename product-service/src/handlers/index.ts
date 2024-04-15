@@ -1,0 +1,1 @@
+export { productReviewAverageUpdatedHandler } from "./productReviewAverageUpdatedHandler";
