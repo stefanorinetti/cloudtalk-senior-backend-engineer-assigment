@@ -7,6 +7,12 @@ const createProduct = async (req: Request, res: Response) => {
   res.status(httpStatus.CREATED).send(createdProduct);
 };
 
+const fetchProducts = async (_: Request, res: Response) => {
+  const fetchedProducts = await productService.fetchProducts();
+  res.status(httpStatus.OK).send(fetchedProducts);
+};
+
 export default {
   createProduct,
+  fetchProducts,
 }

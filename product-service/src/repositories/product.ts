@@ -32,6 +32,8 @@ type FetchProductInput = {
   id: Product['id'];
 }
 
+type FetchProductsInput = {}
+
 const saveProduct = async (productData: SaveProductInput): Promise<Product> => {
   const product = new ProductModel(productData);
   const savedProduct = await product.save();
@@ -79,8 +81,20 @@ const fetchProduct = async ({ id }: FetchProductInput): Promise<Product | null> 
   };
 };
 
+const fetchProducts = async (_?: FetchProductsInput): Promise<Product[]> => {
+  const products = await ProductModel.find();
+  return products.map(product => ({
+    id: product._id.toString(),
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    averageRating: product.averageRating
+  }));
+};
+
 export default {
   fetchProduct,
+  fetchProducts,
   patchProduct,
   saveProduct,
 };
