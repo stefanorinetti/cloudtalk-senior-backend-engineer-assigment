@@ -19,6 +19,10 @@ type SaveProductInput = {
   price: Product['price'];
 }
 
+type FetchProductInput = {
+  id: Product['id'];
+}
+
 const saveProduct = async (productData: SaveProductInput): Promise<Product> => {
   const product = new ProductModel(productData);
   const savedProduct = await product.save();
@@ -31,6 +35,20 @@ const saveProduct = async (productData: SaveProductInput): Promise<Product> => {
   }
 };
 
+const fetchProduct = async ({ id }: FetchProductInput): Promise<Product | null> => {
+  const product = await ProductModel.findById(id);
+  if (!product) {
+    return null;
+  }
+  return {
+    id: product._id.toString(),
+    name: product.name,
+    description: product.description,
+    price: product.price,
+  };
+};
+
 export default {
+  fetchProduct,
   saveProduct,
 };

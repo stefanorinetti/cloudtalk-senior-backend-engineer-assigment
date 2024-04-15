@@ -1,4 +1,5 @@
 import amqp from "amqplib";
+import { Review } from '../services';
 
 let connection: amqp.Connection;
 let channel: amqp.Channel;
@@ -10,4 +11,9 @@ export const publisherConnect = async () => {
 
   await channel.assertExchange(exchange, 'topic');
   console.log('Connected to RabbitMQ');
+}
+
+export const publishReviewCreatedMessage = async (review: Review) => {
+  channel.publish(exchange, 'review.created', Buffer.from(JSON.stringify(review)))
+  console.log(" [x] Sent '%s'", review);
 }

@@ -1,5 +1,10 @@
-import { publisherConnect } from './publisher';
+import { publisherConnect, publishReviewCreatedMessage } from './publisher';
+
+const reviewPublisher = {
+  publishReviewCreatedMessage
+}
 
 export {
-  publisherConnect
+  publisherConnect,
+  reviewPublisher
 }
