@@ -9,7 +9,12 @@ const ReviewSchema = new Schema<ReviewDocument>({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     text: { type: String, required: true },
-    rating: { type: Number, required: true },
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5,
+      required: true,
+    },
 });
 
 const ReviewModel = model<ReviewDocument>('Review', ReviewSchema);
