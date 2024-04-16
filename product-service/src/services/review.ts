@@ -30,6 +30,10 @@ type PatchReviewInput = {
   rating: Review["rating"];
 }
 
+type FetchReviewInput = {
+  id: Review["id"];
+}
+
 const createReview = async (createReviewInput: CreateReviewInput): Promise<Review> => {
   const associatedProduct = await productRepository.fetchProduct({ id: createReviewInput.productId });
   if (!associatedProduct) {
@@ -62,8 +66,17 @@ const patchReview = async (patchReviewInput: PatchReviewInput): Promise<Review> 
   return patchedReview;
 };
 
+const fetchReview = async (fetchReviewInput: FetchReviewInput): Promise<Review> => {
+  const review = await reviewRepository.fetchReview({ id: fetchReviewInput.id });
+  if (!review) {
+    throw new Error('Review not found');
+  }
+  return review;
+};
+
 export default {
   createReview,
   deleteReview,
+  fetchReview,
   patchReview,
 }

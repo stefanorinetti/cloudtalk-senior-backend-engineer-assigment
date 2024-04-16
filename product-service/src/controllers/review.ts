@@ -20,8 +20,14 @@ const patchReview = async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send(patchedReview);
 };
 
+const fetchReview = async (req: Request, res: Response) => {
+  const fetchedReview = await reviewService.fetchReview({ id: req.params.id });
+  res.status(httpStatus.OK).send(fetchedReview);
+};
+
 export default {
   createReview,
+  fetchReview,
   deleteReview,
   patchReview,
 }
