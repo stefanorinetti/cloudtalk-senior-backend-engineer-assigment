@@ -14,8 +14,6 @@ type CreateProductInput = {
   price: Product["price"];
 }
 
-type FetchProductsInput = {}
-
 type PatchProductInput = {
   id: Product["id"];
   name?: Product["name"];
@@ -37,7 +35,7 @@ const createProduct = async (createProductInput: CreateProductInput): Promise<Pr
   return savedProduct;
 };
 
-const fetchProducts = async (_?: FetchProductsInput): Promise<Product[]> => {
+const fetchProducts = async (): Promise<Product[]> => {
   const products = await productRepository.fetchProducts();
   return products;
 };
