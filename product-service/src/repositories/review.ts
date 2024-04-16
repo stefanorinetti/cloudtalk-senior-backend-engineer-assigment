@@ -41,6 +41,10 @@ type FetchReviewInput = {
   id: Review['id'];
 }
 
+type FetchReviewsInput = {
+  productId: Review['productId'];
+}
+
 const saveReview = async (reviewData: SaveReviewInput): Promise<Review> => {
   const review = new ReviewModel(reviewData);
   const savedReview = await review.save();
@@ -110,10 +114,25 @@ const fetchReview = async ({ id }: FetchReviewInput): Promise<Review | null> => 
   };
 };
 
+
+const fetchReviews = async ({ productId }: FetchReviewsInput): Promise<Review[]> => {
+  const reviews = await ReviewModel.find({ productId });
+  return reviews.map(review => ({
+    id: review._id.toString(),
+    productId: review.productId,
+    firstName: review.firstName,
+    lastName: review.lastName,
+    text: review.text,
+    rating: review.rating,
+  }));
+};
+
+
 export default {
   deleteReview,
   deleteReviews,
   fetchReview,
+  fetchReviews,
   patchReview,
   saveReview,
 };

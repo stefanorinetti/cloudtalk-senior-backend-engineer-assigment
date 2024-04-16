@@ -34,6 +34,10 @@ type FetchReviewInput = {
   id: Review["id"];
 }
 
+type FetchReviewsInput = {
+  productId: Review["productId"];
+}
+
 const createReview = async (createReviewInput: CreateReviewInput): Promise<Review> => {
   const associatedProduct = await productRepository.fetchProduct({ id: createReviewInput.productId });
   if (!associatedProduct) {
@@ -74,9 +78,15 @@ const fetchReview = async (fetchReviewInput: FetchReviewInput): Promise<Review> 
   return review;
 };
 
+const fetchReviews = async ({ productId }: FetchReviewsInput): Promise<Review[]> => {
+const reviews = await reviewRepository.fetchReviews({ productId });
+  return reviews;
+};
+
 export default {
   createReview,
   deleteReview,
   fetchReview,
+  fetchReviews,
   patchReview,
 }
