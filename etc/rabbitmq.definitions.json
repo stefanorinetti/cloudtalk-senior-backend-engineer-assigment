@@ -69,6 +69,13 @@
       "arguments": {}
     },
     {
+      "name": "review-service-review-updated",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
       "name": "product-service-product-review-average-updated",
       "vhost": "/",
       "durable": false,
@@ -91,6 +98,14 @@
       "destination": "review-service-review-deleted",
       "destination_type": "queue",
       "routing_key": "review.deleted",
+      "arguments": {}
+    },
+    {
+      "source": "review-exchange",
+      "vhost": "/",
+      "destination": "review-service-review-updated",
+      "destination_type": "queue",
+      "routing_key": "review.updated",
       "arguments": {}
     },
     {

@@ -22,3 +22,8 @@ export const publishReviewDeletedMessage = async (review: Review) => {
   channel.publish(exchange, 'review.deleted', Buffer.from(JSON.stringify(review)))
   console.log(" [x] Sent '%s'", review);
 }
+
+export const publishReviewUpdatedMessage = async (review: Review | { previousRating: number }) => {
+  channel.publish(exchange, 'review.updated', Buffer.from(JSON.stringify(review)))
+  console.log(" [x] Sent '%s'", review);
+}

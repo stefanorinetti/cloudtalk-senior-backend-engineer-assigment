@@ -15,7 +15,13 @@ const deleteReview = async (req: Request, res: Response) => {
   res.status(httpStatus.OK).send(deletedReview);
 };
 
+const patchReview = async (req: Request, res: Response) => {
+  const patchedReview = await reviewService.patchReview({ ...req.body, id: req.params.id });
+  res.status(httpStatus.OK).send(patchedReview);
+};
+
 export default {
   createReview,
   deleteReview,
+  patchReview,
 }

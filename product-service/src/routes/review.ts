@@ -5,6 +5,7 @@ const reviewRouter = express.Router();
 
 reviewRouter
   .post('/:productId/reviews', reviewController.createReview)
-  .delete('/:productId/reviews/:id', reviewController.deleteReview);
+  .delete('/:productId/reviews/:id', reviewController.deleteReview)
+  .patch('/:productId/reviews/:id', reviewController.patchReview);
 
 export { reviewRouter };

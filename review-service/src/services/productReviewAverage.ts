@@ -23,6 +23,13 @@ type CalculateAverageReviewDeletedInput = {
   rating: number;
 }
 
+type CalculateAverageReviewUpdatedInput = {
+  reviewId: ProductReviewAverage['productId'];
+  productId: ProductReviewAverage['productId'];
+  rating: number;
+  previousRating: number;
+}
+
 const calculateAverageReviewCreatedInput = async (createReviewInput: CalculateAverageReviewCreatedInput): Promise<void> => {
   let productReviewAverageToBeSaved: ProductReviewAverageToBeSaved;
   const productReviewAverage = await productReviewAverageRepository.fetchProductReviewAverage({ productId: createReviewInput.productId });
@@ -78,7 +85,26 @@ const calculateAverageReviewDeleted = async (deleteReviewInput: CalculateAverage
   await productReviewAveragePublisher.publishProductReviewAverageUpdated(savedProductReviewAverage);
 };
 
+const calculateAverageReviewUpdated = async (updateReviewInput: CalculateAverageReviewUpdatedInput): Promise<void> => {
+  const productReviewAverage = await productReviewAverageRepository.fetchProductReviewAverage({ productId: updateReviewInput.productId });
+  if (!productReviewAverage) {
+    return;
+  }
+
+  const productReviewAverageToBeSaved: ProductReviewAverageToBeSaved = {
+    id: productReviewAverage.id,
+    reviewId: productReviewAverage.reviewId,
+    productId: productReviewAverage.productId,
+    averageRating: (productReviewAverage.averageRating * productReviewAverage.numberOfReviews - updateReviewInput.previousRating + updateReviewInput.rating) / (productReviewAverage.numberOfReviews),
+    numberOfReviews: productReviewAverage.numberOfReviews,
+  }
+  
+  const savedProductReviewAverage = await productReviewAverageRepository.saveProductReviewAverage(productReviewAverageToBeSaved);
+  await productReviewAveragePublisher.publishProductReviewAverageUpdated(savedProductReviewAverage);
+};
+
 export default {
   calculateAverageReviewDeleted,
+  calculateAverageReviewUpdated,
   calculateAverageReviewCreatedInput,
 }

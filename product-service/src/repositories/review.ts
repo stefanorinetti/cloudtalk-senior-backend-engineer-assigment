@@ -29,6 +29,18 @@ type DeleteReviewInput = {
   id: Review['id'];
 }
 
+type PatchReviewInput = {
+  id: Review['id'];
+  firstName?: Review['firstName'];
+  lastName?: Review['lastName'];
+  text?: Review['text'];
+  rating?: Review['rating'];
+}
+
+type FetchReviewInput = {
+  id: Review['id'];
+}
+
 const saveReview = async (reviewData: SaveReviewInput): Promise<Review> => {
   const review = new ReviewModel(reviewData);
   const savedReview = await review.save();
@@ -63,8 +75,45 @@ const deleteReview = async ({ id }: DeleteReviewInput): Promise<Review | null> =
   };
 };
 
+const patchReview = async (patchReviewData: PatchReviewInput): Promise<Review | null> => {
+  const patchedReview = await ReviewModel.findOneAndUpdate(
+    { _id: patchReviewData.id },
+    patchReviewData,
+    { new: true }
+  );
+  if (!patchedReview) {
+    return null;
+  }
+  const patchReviewToJSON = patchedReview.toJSON();
+  return {
+    id: patchReviewToJSON._id.toString(),
+    productId: patchReviewToJSON.productId,
+    firstName: patchReviewToJSON.firstName,
+    lastName: patchReviewToJSON.lastName,
+    text: patchReviewToJSON.text,
+    rating: patchReviewToJSON.rating,
+  };
+};
+
+const fetchReview = async ({ id }: FetchReviewInput): Promise<Review | null> => {
+  const review = await ReviewModel.findById(id);
+  if (!review) {
+    return null;
+  }
+  return {
+    id: review._id.toString(),
+    productId: review.productId,
+    firstName: review.firstName,
+    lastName: review.lastName,
+    text: review.text,
+    rating: review.rating,
+  };
+};
+
 export default {
   deleteReview,
   deleteReviews,
+  fetchReview,
+  patchReview,
   saveReview,
 };

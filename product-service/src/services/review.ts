@@ -22,6 +22,14 @@ type DeleteReviewInput = {
   id: Review["id"];
 }
 
+type PatchReviewInput = {
+  id: Review["id"];
+  firstName: Review["firstName"];
+  lastName: Review["lastName"];
+  text: Review["text"];
+  rating: Review["rating"];
+}
+
 const createReview = async (createReviewInput: CreateReviewInput): Promise<Review> => {
   const associatedProduct = await productRepository.fetchProduct({ id: createReviewInput.productId });
   if (!associatedProduct) {
@@ -41,7 +49,21 @@ const deleteReview = async (deleteReviewInput: DeleteReviewInput): Promise<Revie
   return deletedReview;
 };
 
+const patchReview = async (patchReviewInput: PatchReviewInput): Promise<Review> => {
+  const review = await reviewRepository.fetchReview(patchReviewInput);
+  if (!review) {
+    throw new Error('Review not found');
+  }
+  const patchedReview = await reviewRepository.patchReview(patchReviewInput);
+  if (!patchedReview) {
+    throw new Error('Review not found');
+  }
+  await reviewPublisher.publishReviewUpdatedMessage({ ...patchedReview, previousRating: review.rating });
+  return patchedReview;
+};
+
 export default {
   createReview,
   deleteReview,
+  patchReview,
 }
