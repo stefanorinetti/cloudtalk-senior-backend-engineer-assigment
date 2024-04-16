@@ -59,8 +59,8 @@ services:
     image: review-service
     command: npm run dev
     ports:
-      - 4001:4001
-      - 9230:9230
+      - 9230-9231:9230
+    scale: 2
     environment:
       - NODE_ENV=development
     volumes:
